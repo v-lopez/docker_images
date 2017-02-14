@@ -4,19 +4,25 @@
 # Modified to allow adding groups and mounting volumes as home of the user
 
 USER_ID=${LOCAL_USER_ID:-9001}
-USER_NAME=${LOCAL_USER_NAME:user}
+USER_NAME=${LOCAL_USER_NAME:-user}
 GROUP_ID=${LOCAL_GROUP_ID}
 GROUP_NAME=${LOCAL_GROUP_NAME}
 
+OLD_USER_ID=`id -u $USER_NAME`
 echo "Starting as user $USER_NAME with UID $USER_ID"
-HOME_ARGS=""
-if [ -d /home/$USER_NAME  ]; then
-    # If home dir is a volume from host don't create home
-    HOME_ARGS="--no-create-home "
+if [ $(getent passwd $USER_NAME) > /dev/null ]; then
+    usermod -o -u $USER_ID $USER_NAME
 else
-    HOME_ARGS="--create-home "
+    HOME_ARGS=""
+    if [ -d /home/$USER_NAME  ]; then
+        # If home dir is a volume from host don't create home
+        HOME_ARGS="--no-create-home "
+    else
+        HOME_ARGS="--create-home "
+    fi
+    useradd --shell /bin/bash -u $USER_ID -o -c "" $HOME_ARGS $USER_NAME
+	find / -user $OLD_USER_ID -exec chown -h $USER_NAME {} \;
 fi
-useradd --shell /bin/bash -u $USER_ID -o -c "" $HOME_ARGS $USER_NAME
 
 export HOME=/home/$USER_NAME
 
