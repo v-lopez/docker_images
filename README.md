@@ -1,3 +1,6 @@
+Credit goes to https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+Modified to allow adding groups and mounting volumes as home of the user
+
 # Use custom user and group
 
 To map your current user and group use:
