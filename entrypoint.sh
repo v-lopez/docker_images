@@ -26,15 +26,14 @@ fi
 export HOME=/home/$USER_NAME
 GROUP_NAME="host_group"
 if [ ! -z $GROUP_ID  ]; then
-        if [ $(getent group $GROUP_ID) > /dev/null ]; then
-            #If group id exists change name
-			OLD_NAME=`getent group $GROUP_ID | cut -d: -f1`
-            echo "Changing group name to host's"
-            groupmod --new-name $GROUP_NAME $OLD_NAME
-        else
-            echo "Adding group $GROUP_NAME with id $GROUP_ID"
-            groupadd -g $GROUP_ID $GROUP_NAME
-        fi
+    if [ $(getent group $GROUP_ID) > /dev/null ]; then
+        #If group id exists change name
+        OLD_NAME=`getent group $GROUP_ID | cut -d: -f1`
+        echo "Changing group name to host's"
+        groupmod --new-name $GROUP_NAME $OLD_NAME
+    else
+        echo "Adding group $GROUP_NAME with id $GROUP_ID"
+        groupadd -g $GROUP_ID $GROUP_NAME
     fi
 fi
 
