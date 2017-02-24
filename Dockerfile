@@ -12,6 +12,7 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
 
 RUN echo "root:Docker!" | chpasswd
 RUN useradd --shell /bin/bash -c "" --create-home user
+RUN usermod -a -G video user
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
