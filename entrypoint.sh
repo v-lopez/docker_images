@@ -35,6 +35,7 @@ if [ ! -z $GROUP_ID  ]; then
         echo "Adding group $GROUP_NAME with id $GROUP_ID"
         groupadd -g $GROUP_ID $GROUP_NAME
     fi
+    usermod -g $GROUP_NAME $USER_NAME
 fi
 
-exec /usr/local/bin/gosu $USER_NAME:$GROUP_ID "$@"
+exec /usr/local/bin/gosu $USER_NAME "$@"
